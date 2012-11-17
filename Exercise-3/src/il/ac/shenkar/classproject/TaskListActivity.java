@@ -40,13 +40,4 @@ public class TaskListActivity extends Activity
 		super.onResume();
 		adapter.notifyDataSetChanged(); // Refresh the ListView when resuming this activity
 	}
-	
-	public void finishedTask(View v)
-	{
-		String pos = v.getTag().toString();
-		int _position = Integer.parseInt(pos);
-		tasksList.removeTask((Task)adapter.getItem(_position));
-		adapter.notifyDataSetChanged();
-	}
-    
 }

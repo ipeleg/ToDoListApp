@@ -21,12 +21,12 @@ public class TaskListArray
 	
 	public void addTask(Task newTask)
 	{
-		tasksArray.add(newTask);
+		tasksArray.add(0,newTask); // Adding new element to the first place in the array
 	}
 	
-	public void removeTask(Task task2Del)
+	public void removeTask(int position)
 	{
-		tasksArray.remove(task2Del);
+		tasksArray.remove(position);
 	}
 	
 	public int getSize()
