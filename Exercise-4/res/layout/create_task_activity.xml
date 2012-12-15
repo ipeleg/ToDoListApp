@@ -1,0 +1,38 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/carbon">
+
+    <Button 
+        android:id="@+id/create_button"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content" 
+        android:text="@string/create"
+        android:layout_marginLeft="240dp"
+        android:layout_marginTop="55dp"
+        android:background="@drawable/button"/>
+    
+    <EditText
+        android:id="@+id/enter_task_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="23dp"
+        android:hint="@string/task_title"
+        android:textColorHint="#FFFFFF"
+        android:textStyle="bold|italic"
+        android:textColor="#FF0000"/>
+
+    <EditText
+        android:id="@+id/enter_task_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="63dp"
+        android:hint="@string/task_description"
+        android:textColorHint="#FFFFFF"
+        android:textStyle="bold|italic"
+        android:textColor="#2DC603"/>    
+    
+</RelativeLayout>
