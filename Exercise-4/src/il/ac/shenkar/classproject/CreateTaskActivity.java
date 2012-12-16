@@ -22,13 +22,18 @@ public class CreateTaskActivity extends Activity
 		{
 			public void onClick(View v)
 			{
+				long rowID;
+				TaskListArray array = TaskListArray.getInstance(getApplicationContext());
+				
 				EditText titleField = (EditText) findViewById(R.id.enter_task_title); // Getting the task title
 				Task newTask= new Task (titleField.getText().toString()); // Creating new task with that title
 				
 				EditText descriptionField = (EditText) findViewById(R.id.enter_task_description); // Getting the task description
 				newTask.setDescription(descriptionField.getText().toString()); // Setting the task description
 				
-				taskDataBase.addTask(newTask); // Adding to DataBase
+				rowID = taskDataBase.addTask(newTask); // Adding to DataBase
+				newTask.setId(rowID);
+				array.addTask(newTask);
 				
 				finish();
 			}

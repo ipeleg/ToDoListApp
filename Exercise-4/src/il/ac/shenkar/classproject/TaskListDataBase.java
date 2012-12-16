@@ -61,9 +61,10 @@ public class TaskListDataBase extends SQLiteOpenHelper
         onCreate(db);
 	}
 
-	// Add new Task
-	public void addTask(Task newTask)
+	// Add new Task and returning the ROWID given from the SQL
+	public long addTask(Task newTask)
 	{
+		long rowID;
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		ContentValues values = new ContentValues();
@@ -72,8 +73,10 @@ public class TaskListDataBase extends SQLiteOpenHelper
 	    values.put(KEY_CREATION_DATE, newTask.getCrationDateString()); // Setting the description
 	    
 	    // Adding the new row to DataBase
-	    db.insert(TABLE_TASKS, null, values);
+	    rowID = db.insert(TABLE_TASKS, null, values);
 	    db.close(); // Closing database connection
+	    
+	    return rowID;
 	}
 
 	// Get specific task
@@ -100,7 +103,7 @@ public class TaskListDataBase extends SQLiteOpenHelper
 	    // Select All Query
 	    String selectQuery = "SELECT  * FROM " + TABLE_TASKS;
 	 
-	    SQLiteDatabase db = this.getWritableDatabase();
+	    SQLiteDatabase db = this.getReadableDatabase();
 	    Cursor cursor = db.rawQuery(selectQuery, null);
 	 
 	    // looping through all rows and adding to list
@@ -144,16 +147,14 @@ public class TaskListDataBase extends SQLiteOpenHelper
 	    values.put(KEY_CREATION_DATE, taskToUpdate.getCrationDateString());
 	 
 	    // updating row
-	    return db.update(TABLE_TASKS, values, KEY_ID + " = ?",
-	            new String[] { String.valueOf(taskToUpdate.getId()) });
+	    return db.update(TABLE_TASKS, values, KEY_ID + " = ?", new String[] { String.valueOf(taskToUpdate.getId()) });
 	}
 
 	// Delete the given Task
 	public void deleteTask (Task task2Del)
 	{
 	    SQLiteDatabase db = this.getWritableDatabase();
-	    db.delete(TABLE_TASKS, KEY_ID + " = ?",
-	            new String[] { String.valueOf(task2Del.getId()) });
+	    db.delete(TABLE_TASKS, KEY_ID + " = ?", new String[] { String.valueOf(task2Del.getId()) });
 	    db.close();
 	}
 }

@@ -61,7 +61,6 @@ public class TaskListActivity extends Activity
 	public void onResume()
 	{
 		super.onResume();
-		tasksList.setTasks(taskDataBase.getAllTasks()); // Setting the tasks from database
 		adapter.notifyDataSetChanged(); // Refresh the ListView when resuming this activity
 	}
 }
