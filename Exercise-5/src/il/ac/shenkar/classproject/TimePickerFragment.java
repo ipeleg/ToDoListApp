@@ -1,15 +1,13 @@
 package il.ac.shenkar.classproject;
 
 import java.util.Calendar;
-
 import android.app.*;
+import android.app.TimePickerDialog.OnTimeSetListener;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
-import android.widget.*;
 
-public class TimePickerFragment extends DialogFragment implements
-		TimePickerDialog.OnTimeSetListener
+public class TimePickerFragment extends DialogFragment
 {
 
 	@Override
@@ -21,17 +19,6 @@ public class TimePickerFragment extends DialogFragment implements
 		int minute = c.get(Calendar.MINUTE);
 
 		// Create a new instance of TimePickerDialog and return it
-		return new TimePickerDialog(getActivity(), this, hour, minute, DateFormat.is24HourFormat(getActivity()));
-	}
-
-	public void onTimeSet(TimePicker view, int hourOfDay, int minute)
-	{
-        Bundle bundle = new Bundle();
-        bundle = getArguments();
-
-        bundle.putInt("set_hour", hourOfDay);
-        bundle.putInt("set_minute", minute);
-        
-        CreateTaskActivity.setTime(String.valueOf(hourOfDay) + ":" + String.valueOf(minute));
+		return new TimePickerDialog(getActivity(), (OnTimeSetListener) getActivity(), hour, minute, DateFormat.is24HourFormat(getActivity()));
 	}
 }

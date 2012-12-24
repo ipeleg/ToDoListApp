@@ -1,30 +1,28 @@
 package il.ac.shenkar.classproject;
 
 import il.ac.shenkar.alarm.SetReminder;
-
-import java.io.Serializable;
 import java.util.Calendar;
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog.OnDateSetListener;
+import android.app.TimePickerDialog.OnTimeSetListener;
 import android.os.*;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.*;
 
 @SuppressLint("HandlerLeak")
-public class CreateTaskActivity extends FragmentActivity
+public class CreateTaskActivity extends FragmentActivity implements OnDateSetListener, OnTimeSetListener
 {
 	// Variables for the DatePicker
-	private Bundle dateBundle;
 	private DatePickerFragment newDateFragment = null;
 	private int year=-1, month=-1, day=-1;
 	
 	// Variables for the TimePicker
-	private Bundle timeBundle;
 	private TimePickerFragment newTimeFragment = null;
 	private int hour=-1, minute=-1;
 	
-	private static TextView dateSeted;
-	private static TextView timeSeted;
+	private TextView dateSeted;
+	private TextView timeSeted;
 	private boolean checked;
 	private TaskListDataBase taskDataBase;
 	private Button setDate;
@@ -61,15 +59,6 @@ public class CreateTaskActivity extends FragmentActivity
 						Toast.makeText(getApplicationContext(), "Please Set Date And Time For The Reminder", Toast.LENGTH_SHORT).show();
 					else
 					{
-						dateBundle = newDateFragment.getArguments();
-						day = dateBundle.getInt("set_day");
-						month = dateBundle.getInt("set_month");
-						year = dateBundle.getInt("set_year"); // Getting the date set by the user
-
-						timeBundle = newTimeFragment.getArguments();
-						hour = timeBundle.getInt("set_hour");
-						minute = timeBundle.getInt("set_minute"); // Getting the time set by the user
-					
 						Calendar cal = Calendar.getInstance();
 						cal.set(year, month, day, hour, minute, 0); // Setting a new Calendar instance with the user reminder date
 					
@@ -99,14 +88,7 @@ public class CreateTaskActivity extends FragmentActivity
 		{
 			public void onClick(View v)
 			{
-                dateBundle = new Bundle(); // Creating new bundle for the dialog
- 
-                dateBundle.putInt("set_day", day); // Mapping the day variable in the bundle 
-                dateBundle.putInt("set_month", month); // Mapping the month variable in the bundle 
-                dateBundle.putInt("set_year", year); // Mapping the year variable in the bundle 
-                
 				newDateFragment = new DatePickerFragment();
-				newDateFragment.setArguments(dateBundle);
 				newDateFragment.show(getSupportFragmentManager(), "datePicker"); // Show the user dialog to pick a date
 			}
 		});
@@ -116,14 +98,8 @@ public class CreateTaskActivity extends FragmentActivity
 		setTime.setOnClickListener(new View.OnClickListener() // Setting click listener for setTime button 
 		{
 			public void onClick(View v)
-			{
-				timeBundle = new Bundle(); // Creating new bundle for the dialog
-				
-				timeBundle.putInt("set_hour", hour); // Mapping the hour variable in the bundle 
-				timeBundle.putInt("set_minute", minute); // Mapping the minute variable in the bundle 
-				
+			{	
 				newTimeFragment = new TimePickerFragment();
-				newTimeFragment.setArguments(timeBundle);
 				newTimeFragment.show(getSupportFragmentManager(), "timePicker"); // Show the user dialog to pick a time
 			}
 		});
@@ -163,14 +139,21 @@ public class CreateTaskActivity extends FragmentActivity
 			return false;
 		return true;
 	}
-	
-	public static void setDate(String date)
+
+    public void onDateSet(DatePicker view, int year, int month, int day)
+    {
+    	this.year = year;
+    	this.month = month;
+    	this.day = day;
+    	
+        dateSeted.setText(String.valueOf(day) + "/" + String.valueOf(month) + "/" + String.valueOf(year));
+    }
+    
+	public void onTimeSet(TimePicker view, int hourOfDay, int minute)
 	{
-		dateSeted.setText(date);
-	}
-	
-	public static void setTime(String time)
-	{
-		timeSeted.setText(time);
+		this.hour = hourOfDay;
+		this.minute = minute;
+        
+		timeSeted.setText(String.valueOf(hourOfDay) + ":" + String.valueOf(minute));
 	}
 }
