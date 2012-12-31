@@ -34,12 +34,12 @@ public final class R {
     }
     public static final class id {
         public static final int add_button=0x7f0a0000;
-        public static final int cancel=0x7f0a0014;
         public static final int create_button=0x7f0a0006;
         public static final int date_set_view=0x7f0a000c;
         public static final int doneButton=0x7f0a000f;
         public static final int enter_task_description=0x7f0a0005;
         public static final int enter_task_title=0x7f0a0004;
+        public static final int exit=0x7f0a0014;
         public static final int get_from_web_button=0x7f0a0008;
         public static final int listView1=0x7f0a0001;
         public static final int menu_settings=0x7f0a0012;
@@ -66,10 +66,12 @@ public final class R {
     }
     public static final class string {
         public static final int add_task=0x7f050004;
+        public static final int alerts=0x7f050011;
         public static final int app_name=0x7f050000;
-        public static final int cancel=0x7f050010;
+        public static final int auto_fetch=0x7f050012;
         public static final int create=0x7f050006;
         public static final int done=0x7f050005;
+        public static final int exit=0x7f050010;
         public static final int get_task_from_web=0x7f05000e;
         public static final int hello_world=0x7f050001;
         public static final int menu_settings=0x7f050002;
@@ -79,6 +81,7 @@ public final class R {
         public static final int set_time=0x7f05000d;
         public static final int settings=0x7f05000f;
         public static final int sort=0x7f05000a;
+        public static final int summary_auto_fetch=0x7f050013;
         public static final int task_description=0x7f050008;
         public static final int task_title=0x7f050007;
         public static final int title_activity_task_list=0x7f050003;

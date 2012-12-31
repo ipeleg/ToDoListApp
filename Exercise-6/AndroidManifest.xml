@@ -24,6 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreateTaskActivity"></activity>
+        <activity android:name=".SettingsActivity"></activity>
         <service android:name=".OnlineTaskService" ></service>
         <receiver android:name="il.ac.shenkar.alarm.StatusBar"></receiver>
     </application>

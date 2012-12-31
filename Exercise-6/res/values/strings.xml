@@ -16,7 +16,10 @@
     <string name="set_time">Set Alarm Time</string>
     <string name="get_task_from_web">Get Online Tasks</string>
     <string name="settings">Settings</string>
-    <string name="cancel">Cancel</string>
+    <string name="exit">Close Program</string>
+    <string name="alerts">Alerts</string>
+    <string name="auto_fetch">Automatic Fetch Tasks?</string>
+    <string name="summary_auto_fetch">Automatically fetch random tasks from the internet every 24 hours.</string>
     
     <string-array name="sorts_options">
         <item >Date Created</item>

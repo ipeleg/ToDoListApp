@@ -1,6 +1,5 @@
 package il.ac.shenkar.classproject;
 
-import il.ac.shenkar.alarm.*;
 import android.os.*;
 import android.view.*;
 import android.widget.*;
@@ -17,7 +16,6 @@ public class TaskListActivity extends Activity
 	private TextView sort;
 	private TaskListDataBase taskDataBase;
 	private Context context;
-	private SetReminder setReminder;
 	
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -25,7 +23,6 @@ public class TaskListActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_list); // Setting the UI view with activity_task_list
         context = getApplicationContext(); // Getting the application context
-        setReminder = new SetReminder(); // Creating new object to set reminders
         
         lv1 = (ListView) findViewById(R.id.listView1); // Creating the ListView
         tasksList = TaskListArray.getInstance(getApplicationContext()); // Creating the tasks list
@@ -37,11 +34,7 @@ public class TaskListActivity extends Activity
         
         adapter = new TaskListAdapter(this); // Creating new adapter for the ListView
         lv1.setAdapter(adapter); // Setting the ListView Adapter
-        
-        //Intent intentService = new Intent (context, OnlineTaskService.class);	
-        //PendingIntent pi = PendingIntent.getService(context, 0, intentService, 0);
-        //setReminder.SetAutomaticTaskResolver(context, pi);
-        
+                
         Button addTaskButton = (Button) findViewById(R.id.add_button); // Creating the addTask button
         addTaskButton.setOnClickListener(new View.OnClickListener() // Setting click listener for addTask button 
 		{			
@@ -81,10 +74,12 @@ public class TaskListActivity extends Activity
     {
     	switch(item.getItemId())
     	{
-    		case R.id.cancel:
+    		case R.id.exit:
+    			finish();
     			break;
     		
     		case R.id.settings:
+    			startActivity(new Intent(getApplicationContext(),SettingsActivity.class));
     			break;
     	}
     	return true;

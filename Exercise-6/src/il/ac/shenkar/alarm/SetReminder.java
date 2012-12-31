@@ -22,12 +22,17 @@ public class SetReminder
 		am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent); // Adding the alarm manager the pending intent
 	}
 	
-	public void SetAutomaticTaskResolver(Context context, PendingIntent pi)
+	public void SetAutomaticTaskResolver(Context context, PendingIntent pi, long intervalMillis, boolean cancel)
 	{
 		Calendar calendar = Calendar.getInstance();
-		
 		AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE); // Getting the alarm manager
-		am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 5*1000, pi);
-		am.cancel(pi);
+		
+		if (cancel)
+		{
+			am.cancel(pi);
+			return;
+		}
+		
+		am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), intervalMillis, pi);
 	}
 }
