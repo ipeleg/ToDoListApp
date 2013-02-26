@@ -1,25 +1,23 @@
 package il.ac.shenkar.classproject;
 
+import il.ac.shenkar.classproject.alarm.SetReminder;
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.content.*;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.TextView;
+import android.widget.*;
 
 public class TaskListAdapter extends BaseAdapter
 {
 	private TaskListArray taskList;
 	private LayoutInflater l_Inflater;
-	private Context TaskListContext;
+	private Context taskListContext;
+	private SetReminder setReminder;
 
 	public TaskListAdapter(Context context)
 	{
-		TaskListContext = context;
+		taskListContext = context;
+		setReminder = new SetReminder();
 		taskList = TaskListArray.getInstance(context);
 		l_Inflater = LayoutInflater.from(context);
 	}
@@ -50,8 +48,6 @@ public class TaskListAdapter extends BaseAdapter
 			holder = new ViewHolder();
 			holder.taskTitle = (TextView) convertView.findViewById(R.id.task_title);
 			holder.taskDescription = (TextView) convertView.findViewById(R.id.task_description);
-			holder.taskID = (TextView) convertView.findViewById(R.id.task_id);
-			holder.dateCreated = (TextView) convertView.findViewById(R.id.task_date_created);
 			
 			holder.done = (Button) convertView.findViewById(R.id.doneButton);
 			
@@ -64,8 +60,6 @@ public class TaskListAdapter extends BaseAdapter
 		
 		holder.taskTitle.setText(taskList.getTask(position).getTitle());
 		holder.taskDescription.setText(taskList.getTask(position).getDescription());
-		holder.taskID.setText(String.valueOf(taskList.getTask(position).getId()));
-		holder.dateCreated.setText("Created on: " + taskList.getTask(position).getCreationDateString());
 		
 		holder.done.setOnClickListener(new OnClickListener() // OnClickListener to delete item from list 
 		{
@@ -78,8 +72,12 @@ public class TaskListAdapter extends BaseAdapter
 		    	        switch (which)
 		    	        {
 		    	        case DialogInterface.BUTTON_POSITIVE: // Delete the task if yes is selected
-		    	        		taskList.removeTask(index);
-		    		    		notifyDataSetChanged();
+		    	        		if (taskList.getTask(index).hasReminder()) // If the task has a reminder -> cancel it.
+		    	        			setReminder.cancelReminder(taskListContext, taskList.getTask(index).getId());
+		    	        		
+		    	        		setReminder.cancelProximityAlert(taskListContext, taskList.getTask(index).getId()); // Canceling any proximity alerts
+		    	        		taskList.removeTask(index); // Removing the task from the array
+		    		    		notifyDataSetChanged(); // Refreshing the ListView
 		    	            break;
 
 		    	        case DialogInterface.BUTTON_NEGATIVE: // Do nothing if "no" is selected
@@ -88,10 +86,21 @@ public class TaskListAdapter extends BaseAdapter
 		    	    }
 		    	};
 
-		    	AlertDialog.Builder builder = new AlertDialog.Builder(TaskListContext);
+		    	AlertDialog.Builder builder = new AlertDialog.Builder(taskListContext);
 		    	builder.setMessage("Are you sure the task is done?").setPositiveButton("Yes", dialogClickListener)
 		    	    .setNegativeButton("No", dialogClickListener).show();
 		    }
+		});
+		
+		View rowView = convertView;
+		rowView.setOnClickListener(new View.OnClickListener()
+		{
+			public void onClick(View arg0)
+			{
+				Intent intent = new Intent(taskListContext, ShowTaskDetails.class);
+				intent.putExtra("taskId",taskList.getTask(index).getId());
+				taskListContext.startActivity(intent);
+			}
 		});
 		
 		return convertView;
@@ -101,8 +110,6 @@ public class TaskListAdapter extends BaseAdapter
 	{
 		TextView taskTitle;
 		TextView taskDescription;
-		TextView taskID;
-		TextView dateCreated;
 		Button done = null;
 	}
 }

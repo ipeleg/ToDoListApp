@@ -8,7 +8,7 @@ public class TaskListArray
 {
 	private Context context;
 	private static TaskListArray array;
-	private  ArrayList<Task> tasksArray;
+	private ArrayList<Task> tasksArray;
 	private TaskListDataBase dataBase;
 	
 	private TaskListArray(Context context)
@@ -51,5 +51,20 @@ public class TaskListArray
 	public Task getTask(int position)
 	{
 		return tasksArray.get(position);
+	}
+	
+	public boolean updateTask(Task task, long id)
+	{
+		for (int i=0 ; i<tasksArray.size(); ++i)
+		{
+			if (tasksArray.get(i).getId() == id)
+			{
+				tasksArray.remove(i);
+				tasksArray.add(task);
+				dataBase.updateTask(task);
+				return true;
+			}
+		}
+		return false;
 	}
 }

@@ -16,6 +16,8 @@ public class TaskListDataBase extends SQLiteOpenHelper
 	public static final String KEY_TITLE = "title";
 	public static final String KEY_DESCRIPTION = "description";
 	public static final String KEY_CREATION_DATE = "creationDate";
+	public static final String KEY_REMINDER = "reminder";
+	public static final String KEY_HAS_REMINDER = "hasReminder";
 	
 	// DataBase name
 	public static final String DATABASE_NAME = "tasksDataBase";
@@ -24,7 +26,7 @@ public class TaskListDataBase extends SQLiteOpenHelper
 	public static final String TABLE_TASKS = "tasksTable";
 	
 	//DataBase Version
-	public static final int DATABASE_VERSION = 12;
+	public static final int DATABASE_VERSION = 18;
 
 	public TaskListDataBase(Context context)
 	{
@@ -46,7 +48,9 @@ public class TaskListDataBase extends SQLiteOpenHelper
 				"(" + KEY_ID + " INTEGER PRIMARY KEY," +
 				KEY_TITLE + " TEXT," +
 				KEY_DESCRIPTION + " TEXT," +
-				KEY_CREATION_DATE + " TEXT" + ")";
+				KEY_CREATION_DATE + " TEXT," + 
+				KEY_REMINDER + " TEXT," +
+				KEY_HAS_REMINDER + " INTEGER" + ")";
 		
 		db.execSQL(CREATE_TASK_TABLE);
 	}
@@ -70,7 +74,9 @@ public class TaskListDataBase extends SQLiteOpenHelper
 		ContentValues values = new ContentValues();
 	    values.put(KEY_TITLE, newTask.getTitle()); // Setting the title
 	    values.put(KEY_DESCRIPTION, newTask.getDescription()); // Setting the description
-	    values.put(KEY_CREATION_DATE, newTask.getCreationFullDateString()); // Setting the description
+	    values.put(KEY_CREATION_DATE, newTask.getFullDateString(newTask.getCrationDate())); // Setting the description
+	    values.put(KEY_REMINDER, newTask.getFullDateString(newTask.getReminder())); // Setting the description
+	    values.put(KEY_HAS_REMINDER, newTask.getHasReminder()); // Setting the hasReminder ( 0 = Don't have, 1 = Have).
 	    
 	    // Adding the new row to DataBase
 	    rowID = db.insert(TABLE_TASKS, null, values);
@@ -85,7 +91,7 @@ public class TaskListDataBase extends SQLiteOpenHelper
 	    SQLiteDatabase db = this.getReadableDatabase();
 	    
 	    Cursor cursor = db.query(TABLE_TASKS, new String[] { KEY_ID,
-	    		KEY_TITLE, KEY_DESCRIPTION, KEY_CREATION_DATE }, KEY_ID + "=?",
+	    		KEY_TITLE, KEY_DESCRIPTION, KEY_CREATION_DATE , KEY_REMINDER, KEY_HAS_REMINDER}, KEY_ID + "=?",
 	            new String[] { String.valueOf(id) }, null, null, null, null);
 	    if (cursor != null)
 	        cursor.moveToFirst();
@@ -94,7 +100,9 @@ public class TaskListDataBase extends SQLiteOpenHelper
         task.setId(Long.parseLong(cursor.getString(0)));
         task.setTitle(cursor.getString(1));
         task.setDescription(cursor.getString(2));
-        task.setDateFromString(cursor.getString(3));
+        task.setDateFromString(cursor.getString(3), "CREATION_DATE");
+        task.setDateFromString(cursor.getString(4), "REMINDER_DATE");
+        task.setHasReminder(cursor.getInt(5));
 
 	    db.close();
 	    return task;
@@ -117,7 +125,9 @@ public class TaskListDataBase extends SQLiteOpenHelper
 	            task.setId(Integer.parseInt(cursor.getString(0)));
 	            task.setTitle(cursor.getString(1));
 	            task.setDescription(cursor.getString(2));
-	            task.setDateFromString(cursor.getString(3));
+	            task.setDateFromString(cursor.getString(3), "CREATION_DATE");
+	            task.setDateFromString(cursor.getString(4), "REMINDER_DATE");
+	            task.setHasReminder(cursor.getInt(5));
 	            
 	            // Adding task to list
 	            taskList.add(task);
@@ -148,7 +158,9 @@ public class TaskListDataBase extends SQLiteOpenHelper
 	    ContentValues values = new ContentValues();
 	    values.put(KEY_TITLE, taskToUpdate.getTitle());
 	    values.put(KEY_DESCRIPTION, taskToUpdate.getDescription());
-	    values.put(KEY_CREATION_DATE, taskToUpdate.getCreationFullDateString());
+	    values.put(KEY_CREATION_DATE, taskToUpdate.getFullDateString(taskToUpdate.getCrationDate()));
+	    values.put(KEY_REMINDER, taskToUpdate.getFullDateString(taskToUpdate.getReminder()));
+	    values.put(KEY_HAS_REMINDER, taskToUpdate.getHasReminder());
 	 
 	    // updating row
 	    return db.update(TABLE_TASKS, values, KEY_ID + " = ?", new String[] { String.valueOf(taskToUpdate.getId()) });

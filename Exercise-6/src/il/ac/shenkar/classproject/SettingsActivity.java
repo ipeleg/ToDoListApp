@@ -1,6 +1,6 @@
 package il.ac.shenkar.classproject;
 
-import il.ac.shenkar.alarm.*;
+import il.ac.shenkar.classproject.alarm.SetReminder;
 import android.app.*;
 import android.content.*;
 import android.os.Bundle;
@@ -27,11 +27,11 @@ public class SettingsActivity extends PreferenceActivity
 		        
 				if (newValue.toString().equals("true"))
 				{
-			        setReminder.SetAutomaticTaskResolver(getApplicationContext(), pi, 24*60*60*1000, false);
+					setReminder.setAutomaticTaskResolver(getApplicationContext(), pi, 24*60*60*1000, false);
 				}
 				else
 				{
-					setReminder.SetAutomaticTaskResolver(getApplicationContext(), pi, 24*60*60*1000, true);
+					setReminder.setAutomaticTaskResolver(getApplicationContext(), pi, 24*60*60*1000, true);
 				}
 				return true;
 			}

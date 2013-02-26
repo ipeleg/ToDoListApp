@@ -1,9 +1,11 @@
 package il.ac.shenkar.classproject;
 
+import com.google.analytics.tracking.android.EasyTracker;
+
 import android.os.*;
 import android.view.*;
 import android.widget.*;
-import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.AdapterView.*;
 import android.app.*;
 import android.content.*;
 
@@ -19,22 +21,23 @@ public class TaskListActivity extends Activity
 	
     @Override
     public void onCreate(Bundle savedInstanceState)
-    {    	
+    {
+    	requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_list); // Setting the UI view with activity_task_list
-        context = getApplicationContext(); // Getting the application context
+        context = getBaseContext(); // Getting the application context
         
         lv1 = (ListView) findViewById(R.id.listView1); // Creating the ListView
-        tasksList = TaskListArray.getInstance(getApplicationContext()); // Creating the tasks list
+        tasksList = TaskListArray.getInstance(context); // Creating the tasks list
         sortSpinner = (Spinner) findViewById (R.id.sort_spinner); // Creating the spinner
         sort = (TextView) findViewById (R.id.sort); // Creating the sort
 
-        taskDataBase = TaskListDataBase.getInstance(getApplicationContext());
+        taskDataBase = TaskListDataBase.getInstance(context);
         tasksList.setTasks(taskDataBase.getAllTasks()); // Setting the tasks from database
         
         adapter = new TaskListAdapter(this); // Creating new adapter for the ListView
         lv1.setAdapter(adapter); // Setting the ListView Adapter
-                
+        
         Button addTaskButton = (Button) findViewById(R.id.add_button); // Creating the addTask button
         addTaskButton.setOnClickListener(new View.OnClickListener() // Setting click listener for addTask button 
 		{			
@@ -79,7 +82,7 @@ public class TaskListActivity extends Activity
     			break;
     		
     		case R.id.settings:
-    			startActivity(new Intent(getApplicationContext(),SettingsActivity.class));
+    			startActivity(new Intent(context,SettingsActivity.class));
     			break;
     	}
     	return true;
@@ -89,5 +92,21 @@ public class TaskListActivity extends Activity
 	{
 		super.onResume();
 		adapter.notifyDataSetChanged(); // Refresh the ListView when resuming this activity
+	}
+	
+	@Override
+	public void onStart()
+	{
+		super.onStart();
+		EasyTracker.getInstance().setContext(getBaseContext());
+		EasyTracker.getInstance().activityStart(this); // Add this method.
+	}
+
+	@Override
+	public void onStop()
+	{
+		super.onStop();
+		EasyTracker.getInstance().activityStop(this); // Add this method.
+		EasyTracker.getInstance().dispatch();
 	}
 }

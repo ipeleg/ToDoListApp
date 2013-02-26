@@ -1,15 +1,27 @@
 package il.ac.shenkar.classproject;
 
-import il.ac.shenkar.alarm.SetReminder;
+import il.ac.shenkar.classproject.alarm.SetReminder;
+import il.ac.shenkar.classproject.fragments.*;
+import il.ac.shenkar.classproject.location.CreateGoogleMap;
+import il.ac.shenkar.classproject.onlinetasks.GetOnlineTasks;
 import java.net.URL;
 import java.util.Calendar;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.google.analytics.tracking.android.EasyTracker;
+
 import android.annotation.SuppressLint;
+import android.app.*;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
+import android.content.Context;
+import android.content.Intent;
+import android.net.*;
 import android.os.*;
-import android.support.v4.app.*;
-import android.view.View;
+import android.support.v4.app.FragmentActivity;
+import android.text.format.Time;
+import android.view.*;
 import android.widget.*;
 
 @SuppressLint("HandlerLeak")
@@ -25,27 +37,37 @@ public class CreateTaskActivity extends FragmentActivity implements OnDateSetLis
 	
 	private TextView dateSeted;
 	private TextView timeSeted;
-	private boolean checked;
+	private boolean checkedReminder;
+	private boolean checkedProximity;
 	private TaskListDataBase taskDataBase;
 	private SetReminder setReminder;
 	private Button setDate;
 	private Button setTime;
 	private Button getTaskFromWeb;
+	private ProgressBar progress;
 	static final int DATE_DIALOG_ID = 1;
 	
 	private EditText descriptionField;
 	private EditText titleField;
 	
+	private Context context;
+	private double latitude;
+	private double longitude;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
+    	requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.create_task_activity); // Setting the UI view with create_task_list
+		context = getBaseContext();
+		setReminder = new SetReminder();
 		
-		taskDataBase = TaskListDataBase.getInstance(getApplicationContext()); // Getting database instance
+		taskDataBase = TaskListDataBase.getInstance(getBaseContext()); // Getting database instance
 		dateSeted = (TextView) findViewById(R.id.date_set_view);
 		timeSeted = (TextView) findViewById(R.id.time_set_view);
 		getTaskFromWeb = (Button) findViewById(R.id.get_from_web_button);
+		progress = (ProgressBar) findViewById(R.id.progress_bar);
 		
 		descriptionField = (EditText) findViewById(R.id.enter_task_description); // Getting the task description
 		titleField = (EditText) findViewById(R.id.enter_task_title); // Getting the task title
@@ -56,38 +78,43 @@ public class CreateTaskActivity extends FragmentActivity implements OnDateSetLis
 			public void onClick(View v)
 			{
 				long rowID;
-				TaskListArray array = TaskListArray.getInstance(getApplicationContext());
+				TaskListArray array = TaskListArray.getInstance(context);
 				
 				Task newTask= new Task (titleField.getText().toString()); // Creating new task with that title
 				newTask.setDescription(descriptionField.getText().toString()); // Setting the task description
 				
-				if (checked)
+				if (checkedReminder) // If the user want to set a reminder
 				{
-					if (!isDateAndTimeSet())
-						Toast.makeText(getApplicationContext(), "Please Set Date And Time For The Reminder", Toast.LENGTH_SHORT).show();
+					if (!isDateAndTimeSet()) // Making sure the user picked date and time for the reminder
+						Toast.makeText(context, "You must set date and time.", Toast.LENGTH_SHORT).show();
 					else
 					{
 						Calendar cal = Calendar.getInstance();
 						cal.set(year, month, day, hour, minute, 0); // Setting a new Calendar instance with the user reminder date
+						
+						Time reminder = new Time(); // Reminder in Time format to store in the object
+						reminder.set(0, minute, hour, day, month, year); // Setting the reminder to be saved in the Task object
+						newTask.setReminder(reminder);
+						newTask.setHasReminder(1); // Setting the boolean flag to indicate that that the task has reminder
 					
 						rowID = taskDataBase.addTask(newTask); // Adding to DataBase
 						newTask.setId(rowID);
 						array.addTask(newTask);
 						
-						setReminder = new SetReminder();
-						setReminder.SetOneTimeReminder(getApplicationContext(), cal, newTask); // Creating a new reminder to be added to the alarm manager
-					
-						finish();
+						setReminder.setOneTimeReminder(context, cal, newTask); // Creating a new reminder to be added to the alarm manager
 					}
 				}
-				else
+				else // Else, just create a new task
 				{
 					rowID = taskDataBase.addTask(newTask); // Adding to DataBase
 					newTask.setId(rowID);
 					array.addTask(newTask); // Adding to Array
-				
-					finish();
 				}
+				
+				if (checkedProximity) // If the user want to add proximity alert
+					setReminder.setProximityAlert(context, newTask, latitude, longitude);
+				
+				finish();
 			}
 		});
 		
@@ -113,16 +140,42 @@ public class CreateTaskActivity extends FragmentActivity implements OnDateSetLis
 			}
 		});
 		
-		final CheckBox checkBox = (CheckBox) findViewById(R.id.set_reminder); //Creating the CheckBox
-		checkBox.setOnClickListener(new View.OnClickListener() // Setting click listener for the check-box for controlling the set's buttons clickability
+		
+		// Checkbox for the proximity alerts
+		final CheckBox checkBoxProximity = (CheckBox) findViewById(R.id.set_proximity_alert); //Creating the CheckBox for proximity alert
+		checkBoxProximity.setOnClickListener(new View.OnClickListener() // Setting click listener for the check-box for controlling the set's buttons clickability
 		{
 			public void onClick(View v)
 			{
-				checked = ((CheckBox) v).isChecked();
+				checkedProximity = ((CheckBox) v).isChecked();
+				switch(v.getId())
+				{
+		        case R.id.set_proximity_alert:
+		            if (checkedProximity) // If the CheckBox is checked allow the user to set a reminder, else don't
+		            {
+						Intent intent = new Intent(context, CreateGoogleMap.class); // Creating new Intent that will start and activity with map
+						startActivityForResult(intent,1); // Starting the new activity
+		            }
+		            else
+		            {
+
+		            }
+		            break;
+				}
+			}
+		});
+		
+		// Checkbox for the reminders
+		final CheckBox checkBoxReminder = (CheckBox) findViewById(R.id.set_reminder); //Creating the CheckBox for reminder alert
+		checkBoxReminder.setOnClickListener(new View.OnClickListener() // Setting click listener for the check-box for controlling the set's buttons clickability
+		{
+			public void onClick(View v)
+			{
+				checkedReminder = ((CheckBox) v).isChecked();
 				switch(v.getId())
 				{
 		        case R.id.set_reminder:
-		            if (checked) // If the CheckBox is checked allow the user to set a reminder, else don't
+		            if (checkedReminder) // If the CheckBox is checked allow the user to set a reminder, else don't
 		            {
 						setDate.setVisibility(View.VISIBLE);
 						setTime.setVisibility(View.VISIBLE);
@@ -145,15 +198,13 @@ public class CreateTaskActivity extends FragmentActivity implements OnDateSetLis
 		{		
 			public void onClick(View v)
 			{
+				if (!isOnline())
+					return;
 				try
 				{
+					progress.setVisibility(View.VISIBLE);
 					TasksFromWeb tasksFromWeb = new TasksFromWeb(); // Creating new AsyncTask
-					URL url = new URL("http://mobile1-tasks-dispatcher.herokuapp.com/task/random"); // Creating new URL to get tasks from 
-					tasksFromWeb.execute(url); // Executing on the given URL
-
-					JSONObject jsonResponse = tasksFromWeb.get(); // Getting the JSONObject from the asynctask
-					titleField.setText(jsonResponse.getString("topic")); // Setting the title field in the UI
-					descriptionField.setText(jsonResponse.getString("description")); // Setting the description field in the UI
+					tasksFromWeb.execute(); // Executing the asynctask
 				}
 				catch (Exception e)
 				{
@@ -178,7 +229,7 @@ public class CreateTaskActivity extends FragmentActivity implements OnDateSetLis
     	this.month = month;
     	this.day = day;
     	
-        dateSeted.setText("Remider Date Is Set To:\n" + String.valueOf(day) + "/" + String.valueOf(month) + "/" + String.valueOf(year));
+        dateSeted.setText("Remider Date Is Set To:\n" + String.valueOf(this.day) + "/" + String.valueOf(this.month + 1) + "/" + String.valueOf(this.year));
     }
 
 	// Setting the Time input values that was received from the user
@@ -191,5 +242,79 @@ public class CreateTaskActivity extends FragmentActivity implements OnDateSetLis
 			timeSeted.setText("Remider Time Is Set To:\n" + String.valueOf(hourOfDay) + ":0" + String.valueOf(minute));
 		else
 			timeSeted.setText("Remider Time Is Set To:\n" + String.valueOf(hourOfDay) + ":" + String.valueOf(minute));
+	}
+	
+	//Checking if the device has Internet connectivity
+	public boolean isOnline()
+	{
+	    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+	    if (netInfo != null && netInfo.isConnected())
+	    {
+	        return true;
+	    }
+	    else
+	    {
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setTitle("Internet Issue");
+            alertDialog.setMessage("It seems that your device is not connected.\nPlease make sure you have internet connectivity.");
+            alertDialog.show();
+	        return false;
+	    }
+	}
+	
+	// Will be called after the user picked a point for alert on map 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if (resultCode == Activity.RESULT_OK)
+		{
+			latitude = data.getDoubleExtra("Lat", -1);
+			longitude = data.getDoubleExtra("Lng", -1);
+		}
+	}
+
+	// Private class for getting an online task
+	private class TasksFromWeb extends AsyncTask<URL, Integer, JSONObject>
+	{	
+		@Override
+		protected JSONObject doInBackground(URL... arg0)
+		{
+			return GetOnlineTasks.getTasks();
+		}
+		
+		@Override
+		protected void onPostExecute(JSONObject jsonResponse)
+		{
+			super.onPostExecute(jsonResponse);
+			
+			try
+			{
+				titleField.setText(jsonResponse.getString("topic")); // Setting the title field in the UI
+				descriptionField.setText(jsonResponse.getString("description")); // Setting the description field in the UI
+				progress.setVisibility(View.INVISIBLE);
+			}
+			catch (JSONException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	@Override
+	public void onStart()
+	{
+		super.onStart();
+		EasyTracker.getInstance().setContext(getBaseContext());
+		EasyTracker.getInstance().activityStart(this); // Add this method.
+	}
+
+	@Override
+	public void onStop()
+	{
+		super.onStop();
+		EasyTracker.getInstance().activityStop(this); // Add this method.
 	}
 }

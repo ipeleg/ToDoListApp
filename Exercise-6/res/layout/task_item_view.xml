@@ -11,21 +11,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:maxWidth="125dp"
-        android:textColor="#FF0000"
+        android:maxWidth="225dp"
+        android:maxLines="1"
+        android:textColor="#FFFFFF"
         android:textSize="15sp"
   		android:layout_marginTop="3dp"
-        android:textStyle="bold" />
-    
-    <TextView
-        android:id="@+id/task_date_created"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/task_title"
-        android:layout_marginRight="10dp"
-        android:layout_toLeftOf="@+id/doneButton"
-        android:textColor="#FFFFFF"
-        android:textSize="12sp"
+  		android:layout_marginLeft="12dp"
         android:textStyle="bold" />
     
     <TextView
@@ -33,30 +24,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_marginLeft="12dp"
         android:layout_below="@+id/task_title"
-        android:maxWidth="250dp"
+        android:maxWidth="225dp"
+        android:minLines="2"
+        android:maxLines="2"
         android:textColor="#2DC603"
         android:paddingBottom="6dp"
         android:textSize="15sp"
-        android:textStyle="bold" />
-     
-     <TextView
-        android:id="@+id/task_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/task_description"
-        android:textColor="#FFFFFF"
-        android:textSize="15sp"
-  		android:layout_marginTop="22dp"
         android:textStyle="bold" />
     
     <Button
         android:id="@+id/doneButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/button"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/button"
+        android:text="@string/done"
         android:layout_centerVertical="true"
-        android:text="@string/done" />
+        android:textSize="18sp" />
 
 </RelativeLayout>
