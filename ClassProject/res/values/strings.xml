@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">ClassProject</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_task_list">ToDo App</string>
+    <string name="add_task">Add New Task</string>
+    <string name="done">Done</string>
+    <string name="create">Create</string>
+    <string name="task_title">Title</string>
+    <string name="task_description">Description</string>
+    <string name="prompt">Pick Sort Method</string>
+    <string name="sort">Sort By:</string>
+    <string name="set_a_reminder">Set a Reminder:</string>
+    <string name="set_date">Set Alarm Date</string>
+    <string name="set_time">Set Alarm Time</string>
+    <string name="get_task_from_web">Get Online Tasks</string>
+    <string name="settings">Settings</string>
+    <string name="exit">Close Program</string>
+    <string name="alerts">Auto Update</string>
+    <string name="auto_fetch">Automatic Fetch Tasks?</string>
+    <string name="summary_auto_fetch">Automatically fetch random tasks from the internet every 24 hours.</string>
+    <string name="date_created">Date Created: </string>
+    <string name="reminder_set_to">Reminde Me On:</string>
+    <string name="edit_task">Edit Task</string>
+    <string name="set_new_reminder">Set New Reminder: </string>
+    <string name="set_proximity">Set Proximity Alert: </string>
+    <string name="set">Set</string>
+    <string name="enter_phone_num">Please Enter Recipient Phone Number</string>
+    <string name="message">Message</string>
+    <string name="send_sms">Send SMS</string>
+    <string name="send_to">Send To:</string>
+    <string name="share">Share</string>
+    <string name="from_map">Map</string>
+    <string name="from_address">Address</string>
+    <string name="enter_address">Please Eneter Address:</string>
+    <string name="address">Address\.\.\.</string>
+    <string name="location">Location</string>
+    
+    <string-array name="sorts_options">
+        <item >Date Created</item>
+        <item >Task Title Name</item>
+    </string-array>
+    
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+</resources>

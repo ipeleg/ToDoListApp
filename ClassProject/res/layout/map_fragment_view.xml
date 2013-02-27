@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/carbon" >
+    
+    <fragment
+        android:id="@+id/mapview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="20dp"
+        class="com.google.android.gms.maps.MapFragment" />
+    
+    <Button
+        android:id="@+id/set"
+        android:layout_width="150dp"
+        android:layout_height="42dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:text="@string/set"
+        android:background="@drawable/button" />
+    
+    <TextView 
+        android:id="@+id/enter_address_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/set"
+        android:layout_marginTop="40dp"
+        android:textSize="23sp"
+        android:textStyle="bold|italic"
+        android:typeface="serif"
+        android:visibility="invisible"
+        android:text="@string/enter_address"/>
+    
+    <EditText
+        android:id="@+id/address_field"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/address"
+        android:layout_below="@+id/enter_address_title"
+        android:layout_marginTop="40dp"
+        android:textColorHint="#FFFFFF"
+        android:textStyle="bold|italic"
+        android:visibility="invisible"
+        android:textColor="#0000FF"/>
+    
+ </RelativeLayout>
