@@ -1,0 +1,102 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/carbon">
+    
+    <EditText
+        android:id="@+id/enter_task_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="23dp"
+        android:hint="@string/task_title"
+        android:textColorHint="#534741" />
+
+    <EditText
+        android:id="@+id/enter_task_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="63dp"
+        android:hint="@string/task_description"
+        android:textColorHint="#534741" />
+
+    <Button
+        android:id="@+id/create_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignRight="@+id/set_date"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="80dp"
+        android:background="@drawable/create_button" />
+
+    <CheckBox
+        android:id="@+id/set_reminder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/set_proximity_alert"
+        android:layout_marginTop="15dp"
+        android:text="@string/set_a_reminder" />
+
+    <Button
+        android:id="@+id/set_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/set_date"
+        android:layout_below="@+id/set_date"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="17dp"
+        android:background="@drawable/set_time_button"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:visibility="invisible" />
+    
+    <TextView 
+        android:id="@+id/time_set_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/set_time"
+        android:layout_marginLeft="3dp"
+        android:layout_alignTop="@+id/set_time"
+        android:gravity="center"
+        android:textSize="12sp"
+        android:textColor="#347C17" />
+
+    <Button
+        android:id="@+id/set_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_alignLeft="@+id/set_reminder"
+        android:layout_below="@+id/set_reminder"
+        android:background="@drawable/set_date_button"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:visibility="invisible" />
+    
+    <TextView 
+        android:id="@+id/date_set_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/set_date"
+        android:layout_alignLeft="@+id/time_set_view"
+        android:layout_alignTop="@+id/set_date"
+        android:gravity="center"
+        android:textSize="12sp"
+        android:textColor="#347C17" />
+    
+    <CheckBox
+        android:id="@+id/set_proximity_alert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/enter_task_description"
+        android:layout_marginTop="15dp"
+        android:text="@string/set_proximity" />
+    
+</RelativeLayout>

@@ -1,0 +1,229 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/show_task_details_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/carbon">
+        
+         <TextView 
+            android:id="@+id/date_created"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" 
+            android:text="@string/date_created"
+            android:typeface="serif"
+            android:textStyle="bold|italic"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="35dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="60dp"
+            android:textColor="#151B8D"
+            android:textSize="13sp" />
+         
+         <EditText 
+            android:id="@+id/show_date_created"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:hint=""
+            android:layout_toRightOf="@+id/date_created"
+            android:layout_alignBaseline="@+id/date_created"
+            android:enabled="false"
+            android:inputType="datetime"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:textSize="14sp"
+            android:textColor="#534741" />
+            
+        <TextView 
+            android:id="@+id/title"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" 
+            android:text="@string/task_title"
+            android:typeface="serif"
+            android:textStyle="bold|italic"
+            android:layout_below="@+id/date_created"
+            android:layout_marginTop="25dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="5dp"
+            android:textColor="#151B8D"
+            android:textSize="13sp" />
+            
+        <EditText 
+            android:id="@+id/show_title"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:hint=""
+            android:layout_alignBaseline="@+id/title"
+            android:layout_toRightOf="@+id/title"
+            android:enabled="false"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:layout_marginLeft="3dp"
+            android:textSize="14sp"
+            android:typeface="serif"
+            android:textColor="#000000"
+            android:textStyle="bold" />
+        
+        <TextView 
+            android:id="@+id/description"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" 
+            android:text="@string/task_description"
+            android:typeface="serif"
+            android:textStyle="bold|italic"
+            android:layout_below="@+id/show_title"
+            android:layout_alignLeft="@+id/title"
+            android:layout_marginTop="75dp"
+            android:textColor="#151B8D"
+            android:textSize="13sp" />
+                
+        <EditText 
+            android:id="@+id/show_description"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:hint=""
+            android:layout_alignBaseline="@+id/description"
+            android:layout_toRightOf="@+id/description"
+            android:enabled="false"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:maxWidth="210dp"
+            android:layout_marginLeft="3dp"
+            android:textSize="14sp"
+            android:typeface="serif"
+            android:textColor="#000000"
+            android:textStyle="bold" />
+        
+        <TextView
+            android:id="@+id/proximity_alert_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/description"
+            android:layout_below="@+id/show_description"
+            android:layout_marginTop="110dp"
+            android:text="@string/location"
+            android:textStyle="bold|italic"
+            android:typeface="serif"
+            android:visibility="invisible"
+            android:textColor="#151B8D"
+            android:textSize="13sp" />
+        
+        <EditText 
+            android:id="@+id/show_proximity_alert"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:hint=""
+            android:layout_alignBaseline="@+id/proximity_alert_title"
+            android:layout_toRightOf="@+id/proximity_alert_title"
+            android:enabled="false"
+            android:inputType="text"
+            android:layout_marginLeft="3dp"
+            android:textSize="14sp"
+            android:typeface="serif"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:visibility="invisible" />
+                
+        <TextView
+            android:id="@+id/reminder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/description"
+            android:layout_below="@+id/show_proximity_alert"
+            android:layout_marginTop="140dp"
+            android:text="@string/reminder_set_to"
+            android:textStyle="bold|italic"
+            android:typeface="serif"
+            android:visibility="invisible"
+            android:textColor="#151B8D"
+            android:textSize="13sp" />
+        
+        <EditText 
+            android:id="@+id/show_reminder"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:hint=""
+            android:layout_alignBaseline="@+id/reminder"
+            android:layout_toRightOf="@+id/reminder"
+            android:enabled="false"
+            android:inputType="datetime"
+            android:layout_marginLeft="3dp"
+            android:textSize="14sp"
+            android:typeface="serif"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:visibility="invisible" />
+        
+        <CheckBox
+            android:id="@+id/set_new_reminder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/description"
+            android:layout_below="@+id/reminder"
+            android:layout_marginTop="20dp"
+            android:text="@string/set_new_reminder"
+            android:textStyle="bold|italic"
+            android:typeface="serif"
+            android:visibility="invisible"
+            android:textColor="#151B8D"
+            android:textSize="13sp" />
+
+        <Button
+            android:id="@+id/set_new_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_alignLeft="@+id/description"
+            android:layout_below="@+id/set_new_reminder"
+            android:background="@drawable/set_date_button"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:visibility="invisible" />
+    
+        <TextView 
+            android:id="@+id/new_date_set_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/set_new_date"
+            android:layout_marginLeft="15dp"
+            android:layout_alignTop="@+id/set_new_date"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textColor="#347C17" />
+    
+        <Button
+            android:id="@+id/set_new_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/description"
+            android:layout_below="@+id/set_new_date"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="17dp"
+            android:background="@drawable/set_time_button"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:visibility="invisible" />
+    
+        <TextView 
+            android:id="@+id/new_time_set_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/set_new_time"
+            android:layout_alignTop="@+id/set_new_time"
+            android:layout_alignLeft="@+id/new_date_set_view"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textColor="#347C17" />
+        
+        <Button 
+            android:id="@+id/edit_button"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:background="@drawable/edit_button"
+            android:layout_centerInParent="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="16dp" 
+            android:layout_marginRight="16dp" />
+        
+</RelativeLayout>
