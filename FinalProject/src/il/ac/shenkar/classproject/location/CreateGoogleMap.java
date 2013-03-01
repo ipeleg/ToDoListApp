@@ -102,9 +102,19 @@ public class CreateGoogleMap extends Activity
 						setResult(Activity.RESULT_OK, resultIntent); // Setting the results for the calling activity
 						Toast.makeText(getApplicationContext(), "Location was successfully retrieved" , Toast.LENGTH_SHORT).show();
 					}
+					
+					// If the there is a bad network connection
 					catch (IOException e)
 					{
 						Toast.makeText(getApplicationContext(), "Location could not be found, Sorry.", Toast.LENGTH_SHORT).show();
+						return;
+					}
+					
+					// If the address entered is not legal
+					catch (Exception e)
+					{
+						Toast.makeText(getApplicationContext(), "The address is not valid.", Toast.LENGTH_SHORT).show();
+						return;
 					}
 				}
 				else // Else get the point from the map
@@ -129,6 +139,7 @@ public class CreateGoogleMap extends Activity
 					catch (IOException e)
 					{
 						Toast.makeText(getApplicationContext(), "Location could not be found, Sorry.", Toast.LENGTH_SHORT).show();
+						return;
 					}
 				}
 				finish();

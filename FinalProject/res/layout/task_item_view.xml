@@ -6,17 +6,24 @@
     android:background="@drawable/background"
     android:layout_marginLeft="10dp" >
     
+    <CheckBox 
+        android:id="@+id/is_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        />
+    
     <TextView
         android:id="@+id/task_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxWidth="220dp"
+        android:maxWidth="200dp"
         android:maxLines="1"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
   		android:layout_marginTop="19dp"
-  		android:layout_marginLeft="10dp" />
+  		android:layout_marginLeft="35dp" />
     
     <TextView
         android:id="@+id/task_description"
@@ -24,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/task_title"
         android:layout_alignLeft="@+id/task_title"
-        android:maxWidth="220dp"
+        android:maxWidth="200dp"
         android:minLines="2"
         android:maxLines="2"
         android:textColor="#534741"

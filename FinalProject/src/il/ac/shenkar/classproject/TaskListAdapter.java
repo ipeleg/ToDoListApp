@@ -46,21 +46,46 @@ public class TaskListAdapter extends BaseAdapter
 		{
 			convertView = l_Inflater.inflate(R.layout.task_item_view, null);
 			holder = new ViewHolder();
+			
 			holder.taskTitle = (TextView) convertView.findViewById(R.id.task_title);
 			holder.taskDescription = (TextView) convertView.findViewById(R.id.task_description);
 			
+			holder.isDone = (CheckBox) convertView.findViewById(R.id.is_done);
 			holder.delete = (Button) convertView.findViewById(R.id.doneButton);
+			
+			if (taskList.getTask(index).getIsDone() == 1)
+				holder.isDone.setChecked(true);
+			else
+				holder.isDone.setChecked(false);
 			
 			convertView.setTag(holder);
 		}
 		else
 		{
 			holder = (ViewHolder) convertView.getTag();
+			
+			if (taskList.getTask(index).getIsDone() == 1)
+				holder.isDone.setChecked(true);
+			else
+				holder.isDone.setChecked(false);
 		}
-		
 		
 		holder.taskTitle.setText(taskList.getTask(position).getTitle());
 		holder.taskDescription.setText(taskList.getTask(position).getDescription());
+		
+		holder.isDone.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				if (((CheckBox) v).isChecked())
+					taskList.getTask(index).setIsDone(1);
+				else
+					taskList.getTask(index).setIsDone(0);
+				
+				taskList.updateTask(taskList.getTask(index), taskList.getTask(index).getId());
+			}
+		});
 		
 		// ClickListener for the delete task button 
 		holder.delete.setOnClickListener(new OnClickListener() // OnClickListener to delete item from list 
@@ -116,5 +141,6 @@ public class TaskListAdapter extends BaseAdapter
 		TextView taskTitle;
 		TextView taskDescription;
 		Button delete = null;
+		CheckBox isDone = null;
 	}
 }

@@ -78,7 +78,10 @@ public class CreateTaskActivity extends FragmentActivity implements OnDateSetLis
 				if (checkedReminder) // If the user want to set a reminder
 				{
 					if (!isDateAndTimeSet()) // Making sure the user picked date and time for the reminder
+					{
 						Toast.makeText(context, "You must set date and time.", Toast.LENGTH_SHORT).show();
+						return;
+					}
 					else
 					{
 						Calendar cal = Calendar.getInstance();

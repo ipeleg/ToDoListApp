@@ -19,6 +19,7 @@ public class TaskListDataBase extends SQLiteOpenHelper
 	public static final String KEY_REMINDER = "reminder";
 	public static final String KEY_HAS_REMINDER = "hasReminder";
 	public static final String KEY_LOCATION = "location";
+	public static final String KEY_IS_DONE = "isDone";
 	
 	// DataBase name
 	public static final String DATABASE_NAME = "tasksDataBase";
@@ -27,7 +28,7 @@ public class TaskListDataBase extends SQLiteOpenHelper
 	public static final String TABLE_TASKS = "tasksTable";
 	
 	//DataBase Version
-	public static final int DATABASE_VERSION = 20;
+	public static final int DATABASE_VERSION = 21;
 
 	public TaskListDataBase(Context context)
 	{
@@ -52,7 +53,8 @@ public class TaskListDataBase extends SQLiteOpenHelper
 				KEY_CREATION_DATE + " TEXT," + 
 				KEY_REMINDER + " TEXT," +
 				KEY_HAS_REMINDER + " INTEGER," +
-				KEY_LOCATION + " TEXT" + ")";
+				KEY_LOCATION + " TEXT," +
+				KEY_IS_DONE + " INTEGER" + ")";
 		
 		db.execSQL(CREATE_TASK_TABLE);
 	}
@@ -81,6 +83,7 @@ public class TaskListDataBase extends SQLiteOpenHelper
 	    values.put(KEY_REMINDER, newTask.getFullDateString(newTask.getReminder())); // Setting the description
 	    values.put(KEY_HAS_REMINDER, newTask.getHasReminder()); // Setting the hasReminder ( 0 = Don't have, 1 = Have).
 	    values.put(KEY_LOCATION, newTask.getLocation()); // Setting the alert location
+	    values.put(KEY_IS_DONE, newTask.getIsDone()); // Setting the alert location
 	    
 	    // Adding the new row to DataBase
 	    rowID = db.insert(TABLE_TASKS, null, values);
@@ -95,7 +98,7 @@ public class TaskListDataBase extends SQLiteOpenHelper
 	    SQLiteDatabase db = this.getReadableDatabase();
 	    
 	    Cursor cursor = db.query(TABLE_TASKS, new String[] { KEY_ID,
-	    		KEY_TITLE, KEY_DESCRIPTION, KEY_CREATION_DATE , KEY_REMINDER, KEY_HAS_REMINDER, KEY_LOCATION}, KEY_ID + "=?",
+	    		KEY_TITLE, KEY_DESCRIPTION, KEY_CREATION_DATE , KEY_REMINDER, KEY_HAS_REMINDER, KEY_LOCATION, KEY_IS_DONE}, KEY_ID + "=?",
 	            new String[] { String.valueOf(id) }, null, null, null, null);
 	    if (cursor != null)
 	        cursor.moveToFirst();
@@ -108,6 +111,7 @@ public class TaskListDataBase extends SQLiteOpenHelper
         task.setDateFromString(cursor.getString(4), "REMINDER_DATE");
         task.setHasReminder(cursor.getInt(5));
         task.setLocation(cursor.getString(6));
+        task.setIsDone(cursor.getInt(7));
 
 	    db.close();
 	    return task;
@@ -135,6 +139,7 @@ public class TaskListDataBase extends SQLiteOpenHelper
 	            task.setDateFromString(cursor.getString(4), "REMINDER_DATE");
 	            task.setHasReminder(cursor.getInt(5));
 	            task.setLocation(cursor.getString(6));
+	            task.setIsDone(cursor.getInt(7));
 	            
 	            // Adding task to list
 	            taskList.add(task);
@@ -169,6 +174,7 @@ public class TaskListDataBase extends SQLiteOpenHelper
 	    values.put(KEY_REMINDER, taskToUpdate.getFullDateString(taskToUpdate.getReminder()));
 	    values.put(KEY_HAS_REMINDER, taskToUpdate.getHasReminder());
 	    values.put(KEY_LOCATION, taskToUpdate.getLocation());
+	    values.put(KEY_IS_DONE, taskToUpdate.getIsDone());
 	 
 	    // updating row
 	    return db.update(TABLE_TASKS, values, KEY_ID + " = ?", new String[] { String.valueOf(taskToUpdate.getId()) });

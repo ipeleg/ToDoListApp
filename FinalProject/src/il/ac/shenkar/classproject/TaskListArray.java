@@ -60,8 +60,7 @@ public class TaskListArray
 		{
 			if (tasksArray.get(i).getId() == id)
 			{
-				tasksArray.remove(i);
-				tasksArray.add(task);
+				tasksArray.set(i, task);
 				dataBase.updateTask(task);
 				return true;
 			}

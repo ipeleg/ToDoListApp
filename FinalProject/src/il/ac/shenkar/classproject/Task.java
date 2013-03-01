@@ -7,11 +7,11 @@ public class Task implements Comparable<Task>
 	private String title; // Task title
 	private String description; // Task description
 	private String location;
-	
 	private Time creationDate; // Date when the task was created
 	private Time reminder;
 	private long Id;
 	private int hasReminder;
+	private int isDone;
 	private enum Dates {CREATION_DATE, REMINDER_DATE};
 
 	public Task()
@@ -23,6 +23,7 @@ public class Task implements Comparable<Task>
 		this.reminder = new Time();
 		this.reminder.set(0, 0, 0, 0, 0, 0);
 		this.hasReminder = 0;
+		this.isDone = 0;
 	}
 	
 	public Task(String title)
@@ -33,6 +34,7 @@ public class Task implements Comparable<Task>
 		this.reminder = new Time();
 		this.reminder.set(0, 0, 0, 0, 0, 0);
 		this.hasReminder = 0;
+		this.isDone = 0;
 	}
 
 	public void setDateFromString(String date, String dates)
@@ -111,6 +113,16 @@ public class Task implements Comparable<Task>
 	public void setLocation(String location)
 	{
 		this.location = location;
+	}
+
+	public int getIsDone()
+	{
+		return isDone;
+	}
+
+	public void setIsDone(int isDone)
+	{
+		this.isDone = isDone;
 	}
 
 	public boolean hasReminder()
